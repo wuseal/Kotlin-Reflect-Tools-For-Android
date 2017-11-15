@@ -1,4 +1,4 @@
-package wu.seal.kotlin.reflecttoolsforandroid
+package wu.seal.android.kotlinreflecttools
 
 import java.lang.Exception
 import java.lang.IllegalArgumentException

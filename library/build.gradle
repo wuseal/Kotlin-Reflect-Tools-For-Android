@@ -8,7 +8,7 @@ apply plugin: 'kotlin-android'
 
 
 group = 'wu.seal'
-version = '1.0.0'
+version = '1.0.1'
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -62,10 +62,10 @@ bintray {
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/wuseal/Kotlin-Reflect-Tools-For-Android'
         version {
-            name = '1.0.0'
+            name = '1.0.1'
             desc = 'First version commit'
             released = new Date()
-            vcsTag = '1.0.0'
+            vcsTag = '1.0.1'
         }
     }
 }

@@ -1,2 +1,2 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="wu.seal.kotlin.reflecttoolsforandroid" />
+    package="wu.seal.android.kotlinreflecttools" />
