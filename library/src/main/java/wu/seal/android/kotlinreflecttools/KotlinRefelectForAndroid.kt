@@ -19,7 +19,6 @@ Time: 14:24
  * change the property value with new value int the special KProperty in package level property ,not the property in class
  *
  */
-
 fun <R> changeTopPropertyValue(property: KProperty<R>, newValue: R): Boolean =
         changePropertyValue(null, property, newValue)
 
