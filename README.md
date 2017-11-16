@@ -1,6 +1,6 @@
-[![Bintray](https://img.shields.io/bintray/v/wusealking/maven/wu.seal.android.kotlinreflecttools.svg)](https://bintray.com/wusealking/maven/wu.seal.jvm.kotlinreflecttools#)
-[![GitHub stars](https://img.shields.io/github/stars/wuseal/Kotlin-Reflect-Tools-For-Android.svg?style=social&label=Stars&style=plastic)](https://github.com/wuseal/Kotlin-Reflect-Tools-For-JVM/stargazers)
-[![license](https://img.shields.io/github/license/wuseal/Kotlin-Reflect-Tools-For-Android.svg)](https://github.com/wuseal/Kotlin-Reflect-Tools-For-JVM/blob/master/LICENSE)
+[![Bintray](https://img.shields.io/bintray/v/wusealking/maven/wu.seal.android.kotlinreflecttools.svg)](https://bintray.com/wusealking/maven/wu.seal.android.kotlinreflecttools#)
+[![GitHub stars](https://img.shields.io/github/stars/wuseal/Kotlin-Reflect-Tools-For-Android.svg?style=social&label=Stars&style=plastic)](https://github.com/wuseal/Kotlin-Reflect-Tools-For-Android/stargazers)
+[![license](https://img.shields.io/github/license/wuseal/Kotlin-Reflect-Tools-For-Android.svg)](https://github.com/wuseal/Kotlin-Reflect-Tools-For-Android/blob/master/LICENSE)
 # Kotlin-Reflect-Tools-For-Android
 Kotlin reflect tools for Android
 
