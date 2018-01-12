@@ -1,16 +1,16 @@
 package wu.seal.android.kotlinreflecttools
 
-
 /**
-Created By: Seal.Wu
-Date: 2017/11/14
-Time: 18:31
+ * Created by Seal.Wu on 2017/10/27.
  */
 
 
 val topName = "topSeal"
+val topNameWu = "topSealWu"
 private val topAge = 666
 private val topAgeName = "666"
+
+private fun gotIt() = true
 private fun preTopAge(): Int {
     return funPropertyReduceAge(topAge)
 }
@@ -20,13 +20,13 @@ private fun nextTopAge(): Int {
 }
 
 
-private fun doubleAgeAndPrint(age: Int):Int {
-    val doubleAge = age*2
+private fun doubleAgeAndPrint(age: Int): Int {
+    val doubleAge = age * 2
     println("double age = $doubleAge")
     return doubleAge
 }
 
-private fun plusTwoAge(age1: Int, age2: Int):Int {
+private fun plusTwoAge(age1: Int, age2: Int): Int {
     val plusAge = age1 + age2
     println("plus age = $plusAge")
 
@@ -34,9 +34,9 @@ private fun plusTwoAge(age1: Int, age2: Int):Int {
 }
 
 
-private fun plusNameAndAge(name: String, age2: Int):String {
+private fun plusNameAndAge(name: String, age2: Int): String {
     val plusNameAndAge = name + age2
-    println("plusNameAndAge = $plusNameAndAge")
+    println("wu.seal.jvm.kotlinreflecttools.plusNameAndAge = $plusNameAndAge")
 
     return plusNameAndAge
 }

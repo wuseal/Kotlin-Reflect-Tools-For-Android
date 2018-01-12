@@ -66,7 +66,7 @@ fun <R> changeClassPropertyValueByName(classObj: Any, propertyName: String, newV
 /**
  * change the property value with new value int the special Property name in package level property ,not the property in class
  */
-fun changeTopPropertyValueByName(otherCallableReference: CallableReference, propertyName: String, newValue: Any) {
+fun changeTopPropertyValueByName(otherCallableReference: CallableReference, propertyName: String, newValue: Any?) {
 
     val owner = otherCallableReference.owner
     val containerClass: Class<*>

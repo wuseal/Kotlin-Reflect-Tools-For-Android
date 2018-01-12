@@ -20,13 +20,33 @@ This is a tool library for Kotlin to use java reflect APIs in Kotlin simply meth
  * Apply library in dependency config:
  
     ```groovy
-       compile 'wu.seal:kotlin-reflect-tools-for-android:1.0.0'
+       compile 'wu.seal:kotlin-reflect-tools-for-android:1.1.0'
     ```
     
 ## APIs
+### API since 1.1
 
-|Method         |Describe          |
-|:------------- |:-------------| 
+|Method         | Describe          |
+|:------------- |:-------------|
+|Any.getPropertyValue(propertyName: String): Any?|get object property value by name|
+|Any.changePropertyValue(propertyName: String, newValue: Any?) |change object property value by name|
+|Any.changePropertyValueByPropertyReference(kProperty: KProperty<R>, newValue: Any?)|change object property value by name|
+|Any.invokeMethod(methodName: String, vararg args: Any?): Any?|invoke a method through object by method name|
+|<R> KProperty<R>.changeValue(thisObj: Any, newValue: Any?)|change current this property valuev|
+|<R> KProperty<R>.packageLevelGetPropertyValueByName(otherPropertyName: String): Any? |get other package level property value by other package level property name which is in the same kotlin file|
+|<R> KFunction<R>.packageLevelGetPropertyValueByName(otherPropertyName: String): Any?|get other package level property value by other package level property name which is in the same kotlin file|
+|<R> KProperty<R>.packageLevelChangePropertyValue(newValue: Any?)|change package level property value|
+|<R> KProperty<R>.packageLevelChangeOtherPropertyValueByName(otherPropertyName: String, newValue: Any?)|change other package level property value by other package level property name which is in the same kotlin file|
+|<R> KFunction<R>.packageLevelChangeOtherPropertyValueByName(otherPropertyName: String, newValue: Any?)|change other package level property value by other package level property name which is in the same kotlin file|
+|<R> KProperty<R>.packageLevelInvokeMethodByName(methodName: String, vararg args: Any?): Any? |invoke package level method by name which is in the same kotlin file|
+|<R> KFunction<R>.packageLevelInvokeMethodByName(methodName: String, vararg args: Any?): Any?|invoke package level method by name which is in the same kotlin file|
+
+
+## APIs
+### API since 1.1
+
+|Method         | Describe          |
+| ------------- |:-------------| 
 |changeTopPropertyValue | change the top level property value |
 | changeTopPropertyValueByName | change the top leve property name by porpery name     |
 | getTopPropertyValueByName | get the top level property value by property name     |
@@ -41,19 +61,12 @@ All method don't care what the property or method visibility it is
 ## Demo
 For example a Kotlin file like this:
 ```kotlin
+
 val topName = "topSeal"
+val topNameWu = "topSealWu"
 private val topAge = 666
-private val topAgeName = "666"
-private fun preTopAge(): Int {
-    return funPropertyReduceAge(topAge)
-}
-private fun nextTopAge(): Int {
-    return funPropertyPlusAge(topAge)
-}
 
-val funPropertyPlusAge: (Int) -> Int = { age -> age + 1 }
-
-val funPropertyReduceAge: (Int) -> Int = { age -> age - 1 }
+private fun gotIt() = true
 
 fun funDoubleAge(age: Int): Int {
     return age * 2
@@ -66,74 +79,50 @@ class TestDemo {
     private fun isMan(): Boolean {
         return true
     }
-
-    fun nextAge(): Int {
-        return age + 1
-    }
 }
 ```
 Then we could do these :
 ```kotlin
-    @org.junit.Test
-    fun changeTopPropertyValue() {
-        val targetName = "fashionSeal"
-        assertNotEquals(targetName, topName)
-        changeTopPropertyValue(::topName, targetName)
-        assertEquals(targetName, topName)
+   
+    @Test
+    fun getPropertyValue() {
+        val demo = TestDemo()
+        val nameValue = demo.getPropertyValue("name")
+        nameValue.should.be.equal("seal")
+    }
+
+    @Test
+    fun changePropertyValue() {
+        val demo = TestDemo()
+        val originValue = demo.age
+        demo.changePropertyValue("age", 100)
+        val nowValue = demo.age
+        originValue.should.not.equal(nowValue)
+        nowValue.should.be.equal(100)
     }
     
-    @org.junit.Test
-    fun changeClassPropertyValue() {
-        val demoObj = TestDemo()
-        val preAge = demoObj.age
-        changeClassPropertyValue(demoObj, demoObj::age, preAge + 1)
-        assertNotEquals(preAge, demoObj.age)
+    @Test
+    fun changeValue() {
+        val demo = TestDemo()
+        demo::age.changeValue(demo, 100)
+        demo.age.should.be.equal(100)
     }
-    
-    @org.junit.Test
-    fun changeClassPropertyValueByName() {
-        val demoObj = TestDemo()
-        val preAge = demoObj.age
-        changeClassPropertyValueByName(demoObj, "age", preAge + 1)
-        assertNotEquals(preAge, demoObj.age)
-    
-        val newValue = "newSeal"
-        changeClassPropertyValueByName(demoObj, "name", newValue)
-        assertEquals(newValue, getClassPropertyValueByName(demoObj, "name"))
+
+    @Test
+    fun packageLevelGetPropertyValueByName() {
+        val topAge = ::topNameWu.packageLevelGetPropertyValueByName("topAge")
+        topAge.should.be.equal(666)
     }
-    
-    @org.junit.Test
-    fun changeTopPropertyValueByName() {
 
-        val targetName = "fashionSeal"
-        assertNotEquals(targetName, topName)
-        changeTopPropertyValueByName(::topName as CallableReference, "topName", targetName)
-        assertEquals(targetName, topName)
-
-        val targetAgeName = "newName"
-        assertNotEquals(targetAgeName, getTopPropertyValueByName(::topName as CallableReference, "topAgeName"))
-        changeTopPropertyValueByName(::topName as CallableReference, "topAgeName", targetAgeName)
-        assertEquals(targetAgeName, getTopPropertyValueByName(::topName as CallableReference, "topAgeName"))
-
-        val targetAge = 18
-        assertNotEquals(targetAge, getTopPropertyValueByName(::topName as CallableReference, "topAge"))
-        changeTopPropertyValueByName(::topName as CallableReference, "topAge", targetAge)
-        assertEquals(targetAge, getTopPropertyValueByName(::topName as CallableReference, "topAge"))
-    }
-    
-    @org.junit.Test
-    fun invokeMethodByMethodName() {
-        val demoObj = TestDemo()
-        val expectedObjMethodValue = true
-        val getMethodValue = invokeClassMethodByMethodName(demoObj, "isMan")
-
-        assertEquals(expectedObjMethodValue, getMethodValue)
-
+    @Test
+    fun packageLevelInvokeMethodByName() {
+        val methodResult = ::topName.packageLevelInvokeMethodByName("gotIt") as Boolean
+        methodResult.should.be.`true`
     }
 
 ```
 
-To see more usage cases ,you can have a look at the test case in project.
+To see more usage cases ,you can have a look at the AndroidTest case in project.
 
 ## Others
 * Welcome to raise any issue.

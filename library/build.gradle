@@ -9,7 +9,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 
 
 group = 'wu.seal'
-version = '1.0.1'
+version = '1.1.0'
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -62,10 +62,10 @@ bintray {
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/wuseal/Kotlin-Reflect-Tools-For-Android'
         version {
-            name = '1.0.1'
+            name = '1.1.0'
             desc = 'First version commit'
             released = new Date()
-            vcsTag = '1.0.1'
+            vcsTag = '1.1.0'
         }
     }
 }
@@ -78,6 +78,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:1.1.51"
+    androidTestImplementation "com.winterbe:expekt:0.5.0"
+
 }
 repositories {
     mavenCentral()
