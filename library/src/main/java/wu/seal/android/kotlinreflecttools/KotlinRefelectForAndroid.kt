@@ -144,17 +144,21 @@ fun invokeClassMethodByMethodName(classObj: Any, methodName: String, vararg meth
     val containerClass: Class<*> = classObj::class.java
 
     containerClass.declaredMethods.forEach { method ->
-        if (method.name == methodName) {
+        if (method.name == methodName && method.parameterTypes.size == methodArgs.size) {
             method.isAccessible = true
-            if (methodArgs.isNotEmpty()) {
+            try {
+                if (methodArgs.isNotEmpty()) {
 
-                return method.invoke(classObj, *methodArgs)
-            } else {
-                return method.invoke(classObj)
+                    return method.invoke(classObj, *methodArgs)
+                } else {
+                    return method.invoke(classObj)
+                }
+            } catch (e: Exception) {
+                return@forEach
             }
         }
     }
-    throw IllegalArgumentException("Can't find the method named :$methodName in the classObj : $classObj")
+    throw IllegalArgumentException("Can't find the method named :$methodName  with args ${methodArgs.toList().toString()} in the classObj : $classObj")
 }
 
 /**
@@ -179,6 +183,6 @@ fun invokeTopMethodByMethodName(otherCallableReference: CallableReference, metho
             }
         }
     }
-    throw IllegalArgumentException("Can't find the method named :$methodName in the same file with ${otherCallableReference.name}")
+    throw IllegalArgumentException("Can't find the method named :$methodName with args $methodArgs in the same file with ${otherCallableReference.name}")
 
 }

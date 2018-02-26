@@ -7,8 +7,10 @@ Date: 2017/11/14
 Time: 18:31
  */
 import android.support.test.runner.AndroidJUnit4
+import com.winterbe.expekt.should
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
+import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.jvm.internal.CallableReference
 
@@ -143,5 +145,30 @@ class ReflectToolsKtTest {
         assertEquals(testName + testAg3, invokeMethodPlusNameAge)
     }
 
+    @Test
+    fun invokeMethodByMethodNameWithDifferentArguments() {
+        val demoObj = TestDemo()
+        val expectedObjMethodValue = false
+        val getMethodValue = invokeClassMethodByMethodName(demoObj, "isMan", expectedObjMethodValue)
+        getMethodValue.should.be.equal(expectedObjMethodValue)
 
+        val args = 0.1
+        val getOtherTypeArgMethodValue = invokeClassMethodByMethodName(demoObj, "isMan", args) as Boolean
+        getOtherTypeArgMethodValue.should.be.`false`
+
+    }
+
+    @Test
+    fun invokeMethodByMethodNameWithWrongArguments() {
+        val demoObj = TestDemo()
+        val expectedObjMethodValue = false
+
+        val returnValue = try {
+            invokeClassMethodByMethodName(demoObj, "isMan", "") as Boolean?
+        } catch (e: Exception) {
+            false
+        }
+        expectedObjMethodValue.should.be.equal(returnValue)
+
+    }
 }

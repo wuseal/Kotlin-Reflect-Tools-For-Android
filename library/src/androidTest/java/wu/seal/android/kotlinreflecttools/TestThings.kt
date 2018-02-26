@@ -57,6 +57,13 @@ class TestDemo {
         return true
     }
 
+    private fun isMan(boolean: Boolean) :Boolean{
+        return boolean
+    }
+    private fun isMan(double: Double) :Boolean{
+        return double==0.0
+    }
+
     fun nextAge(): Int {
         return age + 1
     }
