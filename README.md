@@ -24,7 +24,6 @@ This is a tool library for Kotlin to use java reflect APIs in Kotlin simply meth
     ```
     
 ## APIs
-### API since 1.1
 
 |Method         | Describe          |
 |:------------- |:-------------|
@@ -40,22 +39,7 @@ This is a tool library for Kotlin to use java reflect APIs in Kotlin simply meth
 |<R> KFunction<R>.packageLevelChangeOtherPropertyValueByName(otherPropertyName: String, newValue: Any?)|change other package level property value by other package level property name which is in the same kotlin file|
 |<R> KProperty<R>.packageLevelInvokeMethodByName(methodName: String, vararg args: Any?): Any? |invoke package level method by name which is in the same kotlin file|
 |<R> KFunction<R>.packageLevelInvokeMethodByName(methodName: String, vararg args: Any?): Any?|invoke package level method by name which is in the same kotlin file|
-
-
-## APIs
-### API since 1.0
-
-|Method         | Describe          |
-| ------------- |:-------------| 
-|changeTopPropertyValue | change the top level property value |
-| changeTopPropertyValueByName | change the top leve property name by porpery name     |
-| getTopPropertyValueByName | get the top level property value by property name     |
-|changeClassPropertyValue| change the class inner property value      | 
-| changeClassPropertyValueByName | change the class inner property name by property name     |
-| getClassPropertyValueByName | get the class inner property value by property name   |
-| invokeTopMethodByMethodName | invoke the top level method with method name     |
-| invokeClassMethodByMethodName | invoke class obj inner method with method name     |
-
+ 
 All method don't care what the property or method visibility it is 
 
 ## Demo
