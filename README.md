@@ -20,7 +20,7 @@ This is a tool library for Kotlin to use java reflect APIs in Kotlin simply meth
  * Apply library in dependency config:
  
     ```groovy
-       compile 'wu.seal:kotlin-reflect-tools-for-android:1.1.0'
+       compile 'wu.seal:kotlin-reflect-tools-for-android:1.1.1'
     ```
     
 ## APIs
@@ -29,7 +29,7 @@ This is a tool library for Kotlin to use java reflect APIs in Kotlin simply meth
 |:------------- |:-------------|
 |Any.getPropertyValue(propertyName: String): Any?|get object property value by name|
 |Any.changePropertyValue(propertyName: String, newValue: Any?) |change object property value by name|
-|Any.changePropertyValueByPropertyReference(kProperty: KProperty<R>, newValue: Any?)|change object property value by name|
+|Any.changePropertyValueByPropertyReference(kProperty: KProperty<R>, newValue: Any?)|change object property value by property reference|
 |Any.invokeMethod(methodName: String, vararg args: Any?): Any?|invoke a method through object by method name|
 |<R> KProperty<R>.changeValue(thisObj: Any, newValue: Any?)|change current this property valuev|
 |<R> KProperty<R>.packageLevelGetPropertyValueByName(otherPropertyName: String): Any? |get other package level property value by other package level property name which is in the same kotlin file|
