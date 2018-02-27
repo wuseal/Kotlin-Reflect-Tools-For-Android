@@ -11,6 +11,7 @@ private val topAge = 666
 private val topAgeName = "666"
 
 private fun gotIt() = true
+private fun gotIt(boolean: Boolean) = boolean
 private fun preTopAge(): Int {
     return funPropertyReduceAge(topAge)
 }

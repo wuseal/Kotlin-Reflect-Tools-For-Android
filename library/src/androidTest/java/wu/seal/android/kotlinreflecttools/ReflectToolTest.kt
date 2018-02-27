@@ -171,4 +171,20 @@ class ReflectToolsKtTest {
         expectedObjMethodValue.should.be.equal(returnValue)
 
     }
+
+    @Test
+    fun invokeTopMethodByMethodNameWithDifferentArguments() {
+        var result = invokeTopMethodByMethodName(::topName as CallableReference, "gotIt")
+        result.should.be.equal(true)
+
+        result = invokeTopMethodByMethodName(::topName as CallableReference, "gotIt", false)
+        result.should.be.equal(false)
+
+        result= try {
+            invokeTopMethodByMethodName(::topName as CallableReference, "gotIt", "Wrong")
+        } catch (e: Exception) {
+            "Wrong"
+        }
+        result.should.be.equal("Wrong")
+    }
 }

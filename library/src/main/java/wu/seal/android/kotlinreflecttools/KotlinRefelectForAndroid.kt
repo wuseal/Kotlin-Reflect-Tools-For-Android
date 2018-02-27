@@ -173,13 +173,17 @@ fun invokeTopMethodByMethodName(otherCallableReference: CallableReference, metho
         throw IllegalArgumentException("No such property 'jClass'")
     }
     containerClass.declaredMethods.forEach { method ->
-        if (method.name == methodName) {
+        if (method.name == methodName && method.parameterTypes.size == methodArgs.size) {
             method.isAccessible = true
 
-            if (methodArgs.isNotEmpty()) {
-                return method.invoke(null, *methodArgs)
-            } else {
-                return method.invoke(null)
+            try {
+                if (methodArgs.isNotEmpty()) {
+                    return method.invoke(null, *methodArgs)
+                } else {
+                    return method.invoke(null)
+                }
+            } catch (e: Exception) {
+                return@forEach
             }
         }
     }
