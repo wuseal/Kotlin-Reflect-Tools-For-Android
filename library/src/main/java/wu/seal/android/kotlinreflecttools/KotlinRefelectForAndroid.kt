@@ -37,12 +37,19 @@ private fun <R> changePropertyValue(classObj: Any?, property: KProperty<R>, newV
     } catch (e: Exception) {
         throw IllegalArgumentException("No such property 'jClass'")
     }
-    containerClass.declaredFields.forEach { field ->
-        if (field.name == propertyName) {
-            field.isAccessible = true
-            field.set(classObj, newValue)
-            return true
+
+    var tobeSearchFieldClass: Class<*>? = containerClass
+    while (tobeSearchFieldClass != null) {
+
+        tobeSearchFieldClass.declaredFields.forEach { field ->
+            if (field.name == propertyName) {
+                field.isAccessible = true
+                field.set(classObj, newValue)
+                return true
+            }
         }
+
+        tobeSearchFieldClass = tobeSearchFieldClass.superclass
     }
     return false
 }
@@ -53,12 +60,18 @@ private fun <R> changePropertyValue(classObj: Any?, property: KProperty<R>, newV
 fun <R> changeClassPropertyValueByName(classObj: Any, propertyName: String, newValue: R): Boolean {
     val containerClass: Class<*> = classObj::class.java
 
-    containerClass.declaredFields.forEach { field ->
-        if (field.name == propertyName) {
-            field.isAccessible = true
-            field.set(classObj, newValue)
-            return true
+    var tobeSearchFieldClass: Class<*>? = containerClass
+    while (tobeSearchFieldClass != null) {
+
+        tobeSearchFieldClass.declaredFields.forEach { field ->
+            if (field.name == propertyName) {
+                field.isAccessible = true
+                field.set(classObj, newValue)
+                return true
+            }
         }
+
+        tobeSearchFieldClass = tobeSearchFieldClass.superclass
     }
     return false
 }
@@ -75,17 +88,22 @@ fun changeTopPropertyValueByName(otherCallableReference: CallableReference, prop
     } catch (e: Exception) {
         throw IllegalArgumentException("No such property 'jClass'")
     }
+    var tobeSearchFieldClass: Class<*>? = containerClass
 
-    containerClass.declaredFields.forEach { field ->
-        if (field.name == propertyName) {
-            field.isAccessible = true
-            if (Modifier.isStatic(field.modifiers)) {
-                field.set(null, newValue)
-            } else {
-                throw IllegalStateException("It is not a top property : $propertyName")
+    while (tobeSearchFieldClass != null) {
+
+        tobeSearchFieldClass.declaredFields.forEach { field ->
+            if (field.name == propertyName) {
+                field.isAccessible = true
+                if (Modifier.isStatic(field.modifiers)) {
+                    field.set(null, newValue)
+                } else {
+                    throw IllegalStateException("It is not a top property : $propertyName")
+                }
+                return
             }
-            return
         }
+        tobeSearchFieldClass = tobeSearchFieldClass.superclass
     }
     throw IllegalArgumentException("Can't find the property named :$propertyName in the same file with ${otherCallableReference.name}")
 }
@@ -96,13 +114,20 @@ fun changeTopPropertyValueByName(otherCallableReference: CallableReference, prop
 fun getClassPropertyValueByName(classObj: Any, propertyName: String): Any? {
     val containerClass: Class<*> = classObj::class.java
 
-    containerClass.declaredFields.forEach { field ->
-        if (field.name == propertyName) {
-            field.isAccessible = true
+    var tobeSearchFieldClass: Class<*>? = containerClass
 
-            return field.get(classObj)
+    while (tobeSearchFieldClass != null) {
+
+        tobeSearchFieldClass.declaredFields.forEach { field ->
+            if (field.name == propertyName) {
+                field.isAccessible = true
+
+                return field.get(classObj)
+            }
         }
+        tobeSearchFieldClass = tobeSearchFieldClass.superclass
     }
+
     return null
 }
 
@@ -119,21 +144,28 @@ fun getTopPropertyValueByName(otherCallableReference: CallableReference, propert
         throw IllegalArgumentException("No such property 'jClass'")
     }
 
-    containerClass.declaredFields.forEach { field ->
-        if (field.name == propertyName) {
-            field.isAccessible = true
+    var tobeSearchFieldClass: Class<*>? = containerClass
 
-            /**
-             * top property(package property) should be static in java level
-             * or throw an exception
-             * */
-            if (Modifier.isStatic(field.modifiers)) {
-                return field.get(null)
-            } else {
-                throw IllegalStateException("It is not a top property : $propertyName")
+    while (tobeSearchFieldClass != null) {
+
+        tobeSearchFieldClass.declaredFields.forEach { field ->
+            if (field.name == propertyName) {
+                field.isAccessible = true
+
+                /**
+                 * top property(package property) should be static in java level
+                 * or throw an exception
+                 * */
+                if (Modifier.isStatic(field.modifiers)) {
+                    return field.get(null)
+                } else {
+                    throw IllegalStateException("It is not a top property : $propertyName")
+                }
             }
         }
+        tobeSearchFieldClass = tobeSearchFieldClass.superclass
     }
+
     throw IllegalArgumentException("Can't find the property named :$propertyName in the same file with ${otherCallableReference.name}")
 }
 
@@ -143,21 +175,28 @@ fun getTopPropertyValueByName(otherCallableReference: CallableReference, propert
 fun invokeClassMethodByMethodName(classObj: Any, methodName: String, vararg methodArgs: Any?): Any? {
     val containerClass: Class<*> = classObj::class.java
 
-    containerClass.declaredMethods.forEach { method ->
-        if (method.name == methodName && method.parameterTypes.size == methodArgs.size) {
-            method.isAccessible = true
-            try {
-                if (methodArgs.isNotEmpty()) {
+    var tobeSearchMethodClass: Class<*>? = containerClass
 
-                    return method.invoke(classObj, *methodArgs)
-                } else {
-                    return method.invoke(classObj)
+    while (tobeSearchMethodClass != null) {
+
+        tobeSearchMethodClass.declaredMethods.forEach { method ->
+            if (method.name == methodName && method.parameterTypes.size == methodArgs.size) {
+                method.isAccessible = true
+                try {
+                    if (methodArgs.isNotEmpty()) {
+
+                        return method.invoke(classObj, *methodArgs)
+                    } else {
+                        return method.invoke(classObj)
+                    }
+                } catch (e: Exception) {
+                    return@forEach
                 }
-            } catch (e: Exception) {
-                return@forEach
             }
         }
+        tobeSearchMethodClass = tobeSearchMethodClass.superclass
     }
+
     throw IllegalArgumentException("Can't find the method named :$methodName  with args ${methodArgs.toList().toString()} in the classObj : $classObj")
 }
 
@@ -172,20 +211,27 @@ fun invokeTopMethodByMethodName(otherCallableReference: CallableReference, metho
     } catch (e: Exception) {
         throw IllegalArgumentException("No such property 'jClass'")
     }
-    containerClass.declaredMethods.forEach { method ->
-        if (method.name == methodName && method.parameterTypes.size == methodArgs.size) {
-            method.isAccessible = true
 
-            try {
-                if (methodArgs.isNotEmpty()) {
-                    return method.invoke(null, *methodArgs)
-                } else {
-                    return method.invoke(null)
+    var tobeSearchMethodClass: Class<*>? = containerClass
+
+    while (tobeSearchMethodClass != null) {
+
+        tobeSearchMethodClass.declaredMethods.forEach { method ->
+            if (method.name == methodName && method.parameterTypes.size == methodArgs.size) {
+                method.isAccessible = true
+
+                try {
+                    if (methodArgs.isNotEmpty()) {
+                        return method.invoke(null, *methodArgs)
+                    } else {
+                        return method.invoke(null)
+                    }
+                } catch (e: Exception) {
+                    return@forEach
                 }
-            } catch (e: Exception) {
-                return@forEach
             }
         }
+        tobeSearchMethodClass = tobeSearchMethodClass.superclass
     }
     throw IllegalArgumentException("Can't find the method named :$methodName with args ${methodArgs.toList().toString()} in the same file with ${otherCallableReference.name}")
 
