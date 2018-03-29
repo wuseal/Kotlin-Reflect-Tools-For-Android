@@ -189,7 +189,7 @@ fun invokeClassMethodByMethodName(classObj: Any, methodName: String, vararg meth
                     } else {
                         return method.invoke(classObj)
                     }
-                } catch (e: Exception) {
+                } catch (e: IllegalArgumentException) {
                     return@forEach
                 }
             }
@@ -226,7 +226,7 @@ fun invokeTopMethodByMethodName(otherCallableReference: CallableReference, metho
                     } else {
                         return method.invoke(null)
                     }
-                } catch (e: Exception) {
+                } catch (e: IllegalArgumentException) {
                     return@forEach
                 }
             }
