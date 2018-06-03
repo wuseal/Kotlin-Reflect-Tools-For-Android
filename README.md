@@ -20,7 +20,7 @@ This is a tool library for Kotlin to use java reflect APIs in Kotlin simply meth
  * Apply library in dependency config:
  
     ```groovy
-       compile 'wu.seal:kotlin-reflect-tools-for-android:1.1.1'
+       compile 'wu.seal:kotlin-reflect-tools-for-android:1.1.2'
     ```
     
 ## APIs
